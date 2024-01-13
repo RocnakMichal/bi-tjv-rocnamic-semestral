@@ -1,0 +1,10 @@
+version: '3.7'
+services:
+  postgres:
+    image: postgres
+    environment:
+      - POSTGRES_USER=tjv
+      - POSTGRES_PASSWORD=tjv
+      - POSTGRES_DB=tjv_db
+    ports:
+      - '5432:5432'
