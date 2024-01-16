@@ -15,7 +15,7 @@ public class DriverToEntity implements Function<DriverDto, Driver> {
         Driver driver = new Driver();
         driver.setId(driverDto.getId());
         driver.setName(driverDto.getName());
-        driver.setName(driverDto.getName());
+        driver.setSurname(driverDto.getSurname());
         return driver;
     }
 }

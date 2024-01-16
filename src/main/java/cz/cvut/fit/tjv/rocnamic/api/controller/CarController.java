@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.NoSuchElementException;
+
 @RestController
 @RequestMapping("/car")
 public class CarController extends AbstractCrudController<Car, CarDto, Long> {
@@ -22,7 +24,23 @@ public class CarController extends AbstractCrudController<Car, CarDto, Long> {
     }
 
 
+    @GetMapping("/{id}/driver")
+    public ResponseEntity<DriverDto> readDriver(@PathVariable Long id) {
+        return service.readById(id).map(
+                car -> ResponseEntity.ok(driverToDto.apply(car.getDriver()))
+        ).orElseGet(() -> ResponseEntity.notFound().build());
+    }
 
+
+    @PutMapping("/{idCar}/driver/{idDriver}")
+    public ResponseEntity<Void> setDriver(@PathVariable Long idCar, @PathVariable Long idDriver) {
+        try {
+            ((CarService) service).setDriver(idCar, idDriver);
+            return ResponseEntity.ok().build();
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
 
 
 

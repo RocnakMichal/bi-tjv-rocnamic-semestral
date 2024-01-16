@@ -18,7 +18,6 @@ public class Car extends EntityWithId<Long>{
     @Column(name = "licence_plate",nullable = false)
     private String licence_plate;
 
-
     @Column(name = "brand")
     private String brand;
 
