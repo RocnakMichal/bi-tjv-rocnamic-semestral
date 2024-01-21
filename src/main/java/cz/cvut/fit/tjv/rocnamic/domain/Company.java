@@ -20,5 +20,20 @@ public class Company extends EntityWithId<Long> {
     @Column(name = "number of products")
     private long number_of_products;
 
+    @ManyToMany
+    private Set<Driver> drivers = new HashSet<>();
+
+    public Collection<Driver> getDrivers() {
+        return Collections.unmodifiableCollection(drivers);
+    }
+
+    public void addDriver(Driver driver) {
+        drivers.add(Objects.requireNonNull(driver));
+    }
+
+    public void removeDriver(Driver driver) {
+        drivers.remove(driver);
+    }
+
 
 }
