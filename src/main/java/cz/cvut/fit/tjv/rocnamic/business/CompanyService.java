@@ -4,7 +4,6 @@ import cz.cvut.fit.tjv.rocnamic.dao.CompanyRepository;
 import cz.cvut.fit.tjv.rocnamic.dao.DriverRepository;
 import cz.cvut.fit.tjv.rocnamic.domain.Company;
 import cz.cvut.fit.tjv.rocnamic.domain.Driver;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.NoSuchElementException;
@@ -47,23 +46,23 @@ public class CompanyService extends  AbstractCrudService<Company,Long>{
     }
 
 
-    public void attend(Long Company, Long idDriver) throws NoSuchElementException{
+    public void work(Long Company, Long idDriver) throws NoSuchElementException{
        Company company = findOrThrow(Company);
         Driver driver = driverRepository.findById(idDriver).orElseThrow();
 
         company.addDriver(driver);
-        driver.addAttendee(company);
+        driver.addWork(company);
 
         driverRepository.save(driver);
         repository.save(company);
     }
 
-    public void removeAttend(Long idCompany, Long idDriver) throws NoSuchElementException {
+    public void removeWork(Long idCompany, Long idDriver) throws NoSuchElementException {
         Company company = findOrThrow(idCompany);
         Driver driver = driverRepository.findById(idDriver).orElseThrow();
 
         company.removeDriver(driver);
-        driver.removeAttendee(company);
+        driver.removeWork(company);
 
         driverRepository.save(driver);
         repository.save(company);
@@ -72,7 +71,7 @@ public class CompanyService extends  AbstractCrudService<Company,Long>{
 
 
 
-    public void addDriver(Long idCompany, Long idDriver) throws NoSuchElementException{
+  /*  public void addDriver(Long idCompany, Long idDriver) throws NoSuchElementException{
         Company company = findOrThrow(idCompany);
         Driver driver = driverRepository.findById(idDriver).orElseThrow();
 
@@ -93,7 +92,7 @@ public class CompanyService extends  AbstractCrudService<Company,Long>{
 
         driverRepository.save(driver);
         repository.save(company);
-    }
+    }*/
 
 
 

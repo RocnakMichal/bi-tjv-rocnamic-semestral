@@ -10,6 +10,7 @@ import cz.cvut.fit.tjv.rocnamic.domain.Driver;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.NoSuchElementException;
 
 @Component
@@ -17,7 +18,7 @@ import java.util.NoSuchElementException;
 public class DriverService extends AbstractCrudService<Driver, Long> {
 
     private final CarService carService;
-
+    private DriverRepository driverRepository;
     private final CarRepository carRepository;
     private final CompanyRepository companyRepository;
 
@@ -26,9 +27,13 @@ public class DriverService extends AbstractCrudService<Driver, Long> {
         this.carService=carService;
         this.carRepository=carRepository;
         this.companyRepository=companyRepository;
+    }
 
 
 
+    public Collection<Driver> getDriversWithoutCar()
+    {
+        return driverRepository.getDriversWithoutACar();
     }
 
     @Override
@@ -36,12 +41,16 @@ public class DriverService extends AbstractCrudService<Driver, Long> {
         validate(e);
         Driver oldDriver = findOrThrow(e.getId());
         oldDriver.getCompanys().forEach(e::addCompany);
+        oldDriver.getCars().forEach(e::addCar);
         super.update(e);
     }
 
     @Override
     public void deleteById(Long id) throws NoSuchElementException {
         Driver driver = findOrThrow(id);
+
+        carService.deleteAll(driver.getCars());
+
         driver.getCompanys().forEach(company -> company.removeDriver(driver));
         companyRepository.saveAll(driver.getCompanys());
         super.deleteById(id);
@@ -81,10 +90,7 @@ public class DriverService extends AbstractCrudService<Driver, Long> {
     }
 
 
-
-
-
-    public void addCompany(Long idDriver, Long idCompany) throws NoSuchElementException{
+ /*   public void addCompany(Long idDriver, Long idCompany) throws NoSuchElementException{
         Driver driver = findOrThrow(idDriver);
         Company company = companyRepository.findById(idCompany).orElseThrow();
 
@@ -104,35 +110,30 @@ public class DriverService extends AbstractCrudService<Driver, Long> {
 
         repository.save(driver);
         companyRepository.save(company);
-    }
+    }*/
 
-    public void addAttendee(Long idDriver, Long idCompany) throws NoSuchElementException{
+    public void addWork(Long idDriver, Long idCompany) throws NoSuchElementException{
         Driver driver = findOrThrow(idDriver);
         Company company = companyRepository.findById(idCompany).orElseThrow();
 
 
         company.addDriver(driver);
-        driver.addAttendee(company);
+        driver.addWork(company);
 
         repository.save(driver);
         companyRepository.save(company);
     }
 
-    public void removeAttendee(Long idDriver, Long idCompany) throws NoSuchElementException {
+    public void removeWork(Long idDriver, Long idCompany) throws NoSuchElementException {
         Driver driver = findOrThrow(idDriver);
         Company company = companyRepository.findById(idCompany).orElseThrow();
 
         company.removeDriver(driver);
-        driver.removeAttendee(company);
+        driver.removeWork(company);
 
         repository.save(driver);
         companyRepository.save(company);
     }
-
-
-
-
-
 
 
 }

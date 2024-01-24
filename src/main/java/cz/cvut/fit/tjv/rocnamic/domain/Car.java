@@ -28,6 +28,7 @@ public class Car extends EntityWithId<Long>{
     @Column(name = "bought_in")
     private LocalDate boughtIn;
 
+
     @ManyToOne
     private Driver driver;
 
@@ -39,9 +40,7 @@ public class Car extends EntityWithId<Long>{
         this.boughtIn = boughtIn;
     }
 
-    public Car() {
-
-    }
+    public Car() {}
 
     @Override
     public String toString() {
@@ -53,8 +52,5 @@ public class Car extends EntityWithId<Long>{
                 ", id=" + id +
                 '}';
     }
-
-    //  @OneToOne(mappedBy = "car")
-   // private Driver driver;
 
 }

@@ -1,7 +1,8 @@
-package cz.cvut.fit.tjv.bitjvrocnamicsemestral.app;
+package cz.cvut.fit.tjv.rocnamic.api;
+
+
 
 import cz.cvut.fit.tjv.rocnamic.api.controller.CompanyController;
-import cz.cvut.fit.tjv.rocnamic.domain.Company;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

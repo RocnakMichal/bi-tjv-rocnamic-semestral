@@ -70,9 +70,9 @@ DriverToDto DriverToDto;
             }
     )
     @PutMapping("/{idCompany}/driver/{idDriver}")
-    public ResponseEntity<Void> addAttend(@PathVariable Long idCompany, @PathVariable Long idDriver) {
+    public ResponseEntity<Void> addWork(@PathVariable Long idCompany, @PathVariable Long idDriver) {
         try {
-            ((CompanyService) service).attend(idCompany, idDriver);
+            ((CompanyService) service).work(idCompany, idDriver);
             return ResponseEntity.ok().build();
         } catch (NoSuchElementException e) {
             return ResponseEntity.notFound().build();
@@ -94,9 +94,9 @@ DriverToDto DriverToDto;
             }
     )
     @DeleteMapping("/{idCompany}/driver/{idDriver}")
-    public ResponseEntity<Void> removeAttend(@PathVariable Long idCompany, @PathVariable Long idDriver) {
+    public ResponseEntity<Void> removeWork(@PathVariable Long idCompany, @PathVariable Long idDriver) {
         try {
-            ((CompanyService) service).removeAttend(idCompany, idDriver);
+            ((CompanyService) service).removeWork(idCompany, idDriver);
             return ResponseEntity.ok().build();
         } catch (NoSuchElementException e) {
             return ResponseEntity.notFound().build();

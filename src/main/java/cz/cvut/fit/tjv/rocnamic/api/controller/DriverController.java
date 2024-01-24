@@ -3,6 +3,7 @@ package cz.cvut.fit.tjv.rocnamic.api.controller;
 import cz.cvut.fit.tjv.rocnamic.api.converter.*;
 
 import cz.cvut.fit.tjv.rocnamic.business.DriverService;
+import cz.cvut.fit.tjv.rocnamic.dao.DriverRepository;
 import cz.cvut.fit.tjv.rocnamic.domain.Driver;
 
 
@@ -10,6 +11,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +22,7 @@ import java.util.NoSuchElementException;
 @RequestMapping("/driver")
 public class DriverController extends AbstractCrudController<Driver, DriverDto, Long> {
 
-
+    DriverService driverService;
     DriverToEntity DriverToEntity;
     DriverToDto DriverToDto;
 
@@ -31,7 +33,8 @@ public class DriverController extends AbstractCrudController<Driver, DriverDto, 
     CompanyToEntity CompanyToEntity;
 
 
-
+    @Autowired
+    private DriverRepository driverRepository;
 
     public DriverController(CarToDto carToDto, CarToEntity carToEntity,
 
@@ -44,6 +47,22 @@ public class DriverController extends AbstractCrudController<Driver, DriverDto, 
         this.CompanyToDto=companyToDto;
         this.CompanyToEntity=companyToEntity;
     }
+
+
+
+
+    @GetMapping("/driver/deleteWithoutCar")
+    public ResponseEntity<Void> deleteDriversWithoutCar() {
+        Collection<Driver> drivers = driverRepository.getDriversWithoutACar();
+        if(drivers.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        else {
+            drivers.forEach(driver -> service.deleteById(driver.getId()));
+            return ResponseEntity.noContent().build();
+        }
+    }
+
     @Operation(summary = "Read all Cars that belong to Driver")
     @ApiResponses(
             value = {
@@ -109,12 +128,11 @@ public class DriverController extends AbstractCrudController<Driver, DriverDto, 
             }
     )
     @PostMapping("/{id}/car")
-    public ResponseEntity<Collection<CarDto>> newCar(@PathVariable Long id, @RequestBody CarDto carDto) {
+    public ResponseEntity<CarDto> newCar(@PathVariable Long id, @RequestBody CarDto carDto) {
         try {
-            ((DriverService) service).newCar(id, CarToEntity.apply(carDto));
-            return service.readById(id).<ResponseEntity<Collection<CarDto>>>map(
-                    driver -> ResponseEntity.ok(driver.getCars().stream().map(CarToDto).toList())
-            ).orElseGet(() -> ResponseEntity.notFound().build());
+            return ResponseEntity.ok(CarToDto.apply(
+                    ((DriverService) service).newCar(id, CarToEntity.apply(carDto))
+            ));
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().build();
         } catch (NoSuchElementException e) {
@@ -143,7 +161,7 @@ public class DriverController extends AbstractCrudController<Driver, DriverDto, 
     @GetMapping("/{id}/company")
     public ResponseEntity<Collection<CompanyDto>> readAllCompanys(@PathVariable Long id) {
         return service.readById(id).<ResponseEntity<Collection<CompanyDto>>>map(
-                driver -> ResponseEntity.ok(driver.getAttendees().stream().map(CompanyToDto).toList())
+                driver -> ResponseEntity.ok(driver.getWorkers().stream().map(CompanyToDto).toList())
         ).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
@@ -169,7 +187,7 @@ public class DriverController extends AbstractCrudController<Driver, DriverDto, 
     @PutMapping("/{idDriver}/company/{idCompany}")
     public ResponseEntity<Void> addCompany(@PathVariable Long idDriver, @PathVariable Long idCompany) {
         try {
-            ((DriverService) service).addAttendee(idDriver, idCompany);
+            ((DriverService) service).addWork(idDriver, idCompany);
             return ResponseEntity.ok().build();
         } catch (NoSuchElementException e) {
             return ResponseEntity.notFound().build();
@@ -194,15 +212,10 @@ public class DriverController extends AbstractCrudController<Driver, DriverDto, 
     @DeleteMapping("/{idDriver}/company/{idCompany}")
     public ResponseEntity<Void> removeCompany (@PathVariable Long idDriver, @PathVariable Long idCompany) {
         try {
-            ((DriverService) service).removeAttendee(idDriver, idCompany);
+            ((DriverService) service).removeWork(idDriver, idCompany);
             return ResponseEntity.ok().build();
         } catch (NoSuchElementException e) {
             return ResponseEntity.notFound().build();
         }
     }
-
-
-
-
-
 }

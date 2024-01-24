@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @RestController
@@ -28,6 +29,11 @@ public class CarController extends AbstractCrudController<Car, CarDto, Long> {
     }
 
 
+    @GetMapping("/license-plates")
+    public ResponseEntity<List<String>> getAllLicensePlates() {
+        List<String> licensePlates = ((CarService) service).getAllLicensePlates();
+        return ResponseEntity.ok(licensePlates);
+    }
 
     @Operation(summary = "Read Driver of Car")
     @ApiResponses(
@@ -45,10 +51,11 @@ public class CarController extends AbstractCrudController<Car, CarDto, Long> {
     )
     @GetMapping("/{id}/driver")
     public ResponseEntity<DriverDto> readDriver(@PathVariable Long id) {
-        return service.readById(id).map(
-                car -> ResponseEntity.ok(driverToDto.apply(car.getDriver()))
-        ).orElseGet(() -> ResponseEntity.notFound().build());
-    }
+            return service.readById(id)
+                    .map(car -> ResponseEntity.ok(driverToDto.apply(car.getDriver())))
+                    .orElseGet(() -> ResponseEntity.notFound().build());
+        }
+
 
     @Operation(summary = "Changes Driver of Car")
     @ApiResponses(
@@ -63,7 +70,7 @@ public class CarController extends AbstractCrudController<Car, CarDto, Long> {
                     )
             }
     )
-    @PutMapping("/{idCar}/driver/{idDriver}")
+    @PutMapping("/{idCar}/{idDriver}")
     public ResponseEntity<Void> setDriver(@PathVariable Long idCar, @PathVariable Long idDriver) {
         try {
             ((CarService) service).setDriver(idCar, idDriver);

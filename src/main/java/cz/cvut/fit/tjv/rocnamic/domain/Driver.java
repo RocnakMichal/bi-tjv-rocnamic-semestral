@@ -24,10 +24,8 @@ public class Driver extends EntityWithId<Long> {
     @OneToMany(mappedBy = "driver")
     private Set<Car> cars = new HashSet<>();
 
-    public void addCar(Car car) {
-        cars.add(Objects.requireNonNull(car));
+    public void addCar(Car car) {cars.add(Objects.requireNonNull(car));
     }
-
     public Collection<Car> getCars() {
         return Collections.unmodifiableCollection(cars);
     }
@@ -55,15 +53,15 @@ public class Driver extends EntityWithId<Long> {
     }
 
 
-    public Collection<Company> getAttendees() {
+    public Collection<Company> getWorkers() {
         return Collections.unmodifiableCollection(companys);
     }
-    public void addAttendee(Company attendee) {
-        companys.add(Objects.requireNonNull(attendee));
+    public void addWork(Company work) {
+        companys.add(Objects.requireNonNull(work));
     }
 
-    public void removeAttendee(Company attendee) {
-        companys.remove(attendee);
+    public void removeWork(Company work) {
+        companys.remove(work);
     }
 
 }

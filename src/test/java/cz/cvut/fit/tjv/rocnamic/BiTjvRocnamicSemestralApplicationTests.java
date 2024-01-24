@@ -1,4 +1,4 @@
-package cz.cvut.fit.tjv.bitjvrocnamicsemestral;
+package cz.cvut.fit.tjv.rocnamic;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
