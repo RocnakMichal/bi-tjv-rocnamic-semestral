@@ -6,7 +6,8 @@ stages:
 
 build:
   stage: build
-  script: ./gradlew build
+  script: docker-compose up
+          ./gradlew build
 
 test:
   stage: test
