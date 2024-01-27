@@ -2,7 +2,7 @@ package cz.cvut.fit.tjv.rocnamic.api.controller;
 
 
 import cz.cvut.fit.tjv.rocnamic.api.converter.DtoWithId;
-import cz.cvut.fit.tjv.rocnamic.business.AbstractCrudService;
+import cz.cvut.fit.tjv.rocnamic.service.AbstractCrudService;
 import cz.cvut.fit.tjv.rocnamic.domain.EntityWithId;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;

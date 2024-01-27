@@ -3,7 +3,7 @@ package cz.cvut.fit.tjv.rocnamic.api.controller;
 import cz.cvut.fit.tjv.rocnamic.api.converter.CompanyToDto;
 import cz.cvut.fit.tjv.rocnamic.api.converter.CompanyToEntity;
 import cz.cvut.fit.tjv.rocnamic.api.converter.DriverToDto;
-import cz.cvut.fit.tjv.rocnamic.business.CompanyService;
+import cz.cvut.fit.tjv.rocnamic.service.CompanyService;
 import cz.cvut.fit.tjv.rocnamic.domain.Company;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;

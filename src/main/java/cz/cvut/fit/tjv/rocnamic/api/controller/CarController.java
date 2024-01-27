@@ -4,7 +4,7 @@ package cz.cvut.fit.tjv.rocnamic.api.controller;
 import cz.cvut.fit.tjv.rocnamic.api.converter.CarToDto;
 import cz.cvut.fit.tjv.rocnamic.api.converter.CarToEntity;
 import cz.cvut.fit.tjv.rocnamic.api.converter.DriverToDto;
-import cz.cvut.fit.tjv.rocnamic.business.CarService;
+import cz.cvut.fit.tjv.rocnamic.service.CarService;
 import cz.cvut.fit.tjv.rocnamic.domain.Car;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;

@@ -1,13 +1,10 @@
-package cz.cvut.fit.tjv.rocnamic.business;
+package cz.cvut.fit.tjv.rocnamic.service;
 
 
 import cz.cvut.fit.tjv.rocnamic.domain.EntityWithId;
-import cz.cvut.fit.tjv.rocnamic.exception.EntityStateException;
 import org.hibernate.PropertyValueException;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.CrudRepository;
 
-import javax.transaction.Transactional;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.NoSuchElementException;

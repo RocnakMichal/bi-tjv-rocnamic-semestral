@@ -53,16 +53,5 @@ public class Driver extends EntityWithId<Long> {
     }
 
 
-    public Collection<Company> getWorkers() {
-        return Collections.unmodifiableCollection(companys);
-    }
-    public void addWork(Company work) {
-        companys.add(Objects.requireNonNull(work));
-    }
-
-    public void removeWork(Company work) {
-        companys.remove(work);
-    }
-
 }
 

@@ -1,8 +1,8 @@
 package cz.cvut.fit.tjv.rocnamic;
 
-import cz.cvut.fit.tjv.rocnamic.dao.CarRepository;
-import cz.cvut.fit.tjv.rocnamic.dao.CompanyRepository;
-import cz.cvut.fit.tjv.rocnamic.dao.DriverRepository;
+import cz.cvut.fit.tjv.rocnamic.repository.CarRepository;
+import cz.cvut.fit.tjv.rocnamic.repository.CompanyRepository;
+import cz.cvut.fit.tjv.rocnamic.repository.DriverRepository;
 import cz.cvut.fit.tjv.rocnamic.domain.Car;
 import cz.cvut.fit.tjv.rocnamic.domain.Company;
 import cz.cvut.fit.tjv.rocnamic.domain.Driver;
@@ -12,9 +12,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.HashSet;
-import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -44,10 +42,12 @@ public class DataInitializer {
         Driver driver1 = createDriver("Tomas", "Cerny");
         Driver driver2 = createDriver("Adam", "Novotny");
         Driver driver3 = createDriver("Filip", "Pilny");
+        Driver driver4 = createDriver("No", "Cars");
+        Set<Company> companies = new HashSet<>();
 
-        Company company1 = createCompany("Company", 1000,driver1,driver2);
-        Company company2 = createCompany("Gasss", 15000,driver1,driver3);
-        Company company3 = createCompany("Oxygen", 18250,driver2,driver3);
+        Company company1 = createCompany("Company", 1000);
+        Company company2 = createCompany("Gasss", 15000);
+        Company company3 = createCompany("Oxygen", 18250);
 
 
         long minDay = LocalDate.of(1995, 1, 1).toEpochDay();
@@ -62,6 +62,22 @@ public class DataInitializer {
         Car car2 = createCar("6H71829","Ford","Focus",randomDate2,driver2);
         Car car3 = createCar("2A71508","Renault","Twingo",randomDate3,driver3);
 
+
+        Set<Driver> drivers1 = new HashSet<>();
+        Set<Driver> drivers2 = new HashSet<>();
+        Set<Driver> drivers3 = new HashSet<>();
+
+        drivers1.add(driver1);
+        drivers1.add(driver2);
+        company1.setDrivers(drivers1);
+
+        drivers2.add(driver2);
+        drivers2.add(driver3);
+        company2.setDrivers(drivers2);
+
+        drivers3.add(driver1);
+        drivers3.add(driver3);
+        company3.setDrivers(drivers3);
     }
 
     /* private void clearDB() {
@@ -85,14 +101,10 @@ public class DataInitializer {
         return carRepository.save(car);
     }
 
-    private Company createCompany(String name, int number_of_product,Driver driver1,Driver driver2) {
+    private Company createCompany(String name, int number_of_product) {
         Company company = new Company();
         company.setName(name);
         company.setNumber_of_products(number_of_product);
-        Set<Driver> drivers = new HashSet<>();
-        drivers.add(driver1);
-        drivers.add(driver2);
-        company.setDrivers(drivers);
         return companyRepository.save(company);
     }
 }

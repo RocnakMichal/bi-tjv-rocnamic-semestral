@@ -2,8 +2,8 @@ package cz.cvut.fit.tjv.rocnamic.api.controller;
 
 import cz.cvut.fit.tjv.rocnamic.api.converter.*;
 
-import cz.cvut.fit.tjv.rocnamic.business.DriverService;
-import cz.cvut.fit.tjv.rocnamic.dao.DriverRepository;
+import cz.cvut.fit.tjv.rocnamic.service.DriverService;
+import cz.cvut.fit.tjv.rocnamic.repository.DriverRepository;
 import cz.cvut.fit.tjv.rocnamic.domain.Driver;
 
 
@@ -48,20 +48,6 @@ public class DriverController extends AbstractCrudController<Driver, DriverDto, 
         this.CompanyToEntity=companyToEntity;
     }
 
-
-
-
-    @GetMapping("/driver/deleteWithoutCar")
-    public ResponseEntity<Void> deleteDriversWithoutCar() {
-        Collection<Driver> drivers = driverRepository.getDriversWithoutACar();
-        if(drivers.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-        else {
-            drivers.forEach(driver -> service.deleteById(driver.getId()));
-            return ResponseEntity.noContent().build();
-        }
-    }
 
     @Operation(summary = "Read all Cars that belong to Driver")
     @ApiResponses(
@@ -141,9 +127,6 @@ public class DriverController extends AbstractCrudController<Driver, DriverDto, 
     }
 
 
-
-
-
     @Operation(summary = "Read all Companies that belong to Driver")
     @ApiResponses(
             value = {
@@ -158,10 +141,36 @@ public class DriverController extends AbstractCrudController<Driver, DriverDto, 
                     )
             }
     )
+    @GetMapping("/driver/deleteWithoutCar")
+    public ResponseEntity<Void> deleteDriversWithoutCar() {
+        Collection<Driver> drivers = driverRepository.getDriversWithoutACar();
+        if(drivers.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        else {
+            drivers.forEach(driver -> service.deleteById(driver.getId()));
+            return ResponseEntity.noContent().build();
+        }
+    }
+
+    @Operation(summary = "Remove Company from Driver")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Drivers successfully removed"
+                    ),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "Provided driver invalid",
+                            content = @Content
+                    )
+            }
+    )
     @GetMapping("/{id}/company")
     public ResponseEntity<Collection<CompanyDto>> readAllCompanys(@PathVariable Long id) {
         return service.readById(id).<ResponseEntity<Collection<CompanyDto>>>map(
-                driver -> ResponseEntity.ok(driver.getWorkers().stream().map(CompanyToDto).toList())
+                driver -> ResponseEntity.ok(driver.getCompanys().stream().map(CompanyToDto).toList())
         ).orElseGet(() -> ResponseEntity.notFound().build());
     }
 

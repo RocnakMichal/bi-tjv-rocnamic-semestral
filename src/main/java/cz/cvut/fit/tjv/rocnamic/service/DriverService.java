@@ -1,9 +1,8 @@
-package cz.cvut.fit.tjv.rocnamic.business;
+package cz.cvut.fit.tjv.rocnamic.service;
 
-import cz.cvut.fit.tjv.rocnamic.dao.CarRepository;
-import cz.cvut.fit.tjv.rocnamic.business.CarService;
-import cz.cvut.fit.tjv.rocnamic.dao.DriverRepository;
-import cz.cvut.fit.tjv.rocnamic.dao.CompanyRepository;
+import cz.cvut.fit.tjv.rocnamic.repository.CarRepository;
+import cz.cvut.fit.tjv.rocnamic.repository.DriverRepository;
+import cz.cvut.fit.tjv.rocnamic.repository.CompanyRepository;
 import cz.cvut.fit.tjv.rocnamic.domain.Car;
 import cz.cvut.fit.tjv.rocnamic.domain.Company;
 import cz.cvut.fit.tjv.rocnamic.domain.Driver;
@@ -81,36 +80,14 @@ public class DriverService extends AbstractCrudService<Driver, Long> {
         Driver driver = findOrThrow(id);
 
         e.setDriver(driver);
-        Car ret = carService.create(e);
+        Car car = carService.create(e);
 
         driver.addCar(e);
 
         repository.save(driver);
-        return ret;
+        return car;
     }
 
-
- /*   public void addCompany(Long idDriver, Long idCompany) throws NoSuchElementException{
-        Driver driver = findOrThrow(idDriver);
-        Company company = companyRepository.findById(idCompany).orElseThrow();
-
-        company.addDriver(driver);
-        driver.addCompany(company);
-
-        repository.save(driver);
-        companyRepository.save(company);
-    }
-
-    public void removeCompany(Long idDriver, Long idCompany) throws NoSuchElementException {
-        Driver driver = findOrThrow(idDriver);
-        Company company = companyRepository.findById(idCompany).orElseThrow();
-
-        company.removeDriver(driver);
-        driver.removeCompany(company);
-
-        repository.save(driver);
-        companyRepository.save(company);
-    }*/
 
     public void addWork(Long idDriver, Long idCompany) throws NoSuchElementException{
         Driver driver = findOrThrow(idDriver);
@@ -118,7 +95,7 @@ public class DriverService extends AbstractCrudService<Driver, Long> {
 
 
         company.addDriver(driver);
-        driver.addWork(company);
+        driver.addCompany(company);
 
         repository.save(driver);
         companyRepository.save(company);
@@ -129,7 +106,7 @@ public class DriverService extends AbstractCrudService<Driver, Long> {
         Company company = companyRepository.findById(idCompany).orElseThrow();
 
         company.removeDriver(driver);
-        driver.removeWork(company);
+        driver.removeCompany(company);
 
         repository.save(driver);
         companyRepository.save(company);

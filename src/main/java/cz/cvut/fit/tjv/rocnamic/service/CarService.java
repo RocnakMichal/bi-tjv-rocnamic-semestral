@@ -1,7 +1,7 @@
-package cz.cvut.fit.tjv.rocnamic.business;
+package cz.cvut.fit.tjv.rocnamic.service;
 
-import cz.cvut.fit.tjv.rocnamic.dao.CarRepository;
-import cz.cvut.fit.tjv.rocnamic.dao.DriverRepository;
+import cz.cvut.fit.tjv.rocnamic.repository.CarRepository;
+import cz.cvut.fit.tjv.rocnamic.repository.DriverRepository;
 import cz.cvut.fit.tjv.rocnamic.domain.Car;
 import cz.cvut.fit.tjv.rocnamic.domain.Driver;
 import org.springframework.stereotype.Component;

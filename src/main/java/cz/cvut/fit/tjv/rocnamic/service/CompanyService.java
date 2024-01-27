@@ -1,7 +1,7 @@
-package cz.cvut.fit.tjv.rocnamic.business;
+package cz.cvut.fit.tjv.rocnamic.service;
 
-import cz.cvut.fit.tjv.rocnamic.dao.CompanyRepository;
-import cz.cvut.fit.tjv.rocnamic.dao.DriverRepository;
+import cz.cvut.fit.tjv.rocnamic.repository.CompanyRepository;
+import cz.cvut.fit.tjv.rocnamic.repository.DriverRepository;
 import cz.cvut.fit.tjv.rocnamic.domain.Company;
 import cz.cvut.fit.tjv.rocnamic.domain.Driver;
 import org.springframework.stereotype.Service;
@@ -40,7 +40,7 @@ public class CompanyService extends  AbstractCrudService<Company,Long>{
     }
 
     @Override
-    protected void validate(Company company) throws IllegalArgumentException {
+    public void validate(Company company) throws IllegalArgumentException {
         if(company.getName().length()>255)
             throw new IllegalArgumentException();
     }
@@ -50,8 +50,9 @@ public class CompanyService extends  AbstractCrudService<Company,Long>{
        Company company = findOrThrow(Company);
         Driver driver = driverRepository.findById(idDriver).orElseThrow();
 
+
+        driver.addCompany(company);
         company.addDriver(driver);
-        driver.addWork(company);
 
         driverRepository.save(driver);
         repository.save(company);
@@ -61,8 +62,9 @@ public class CompanyService extends  AbstractCrudService<Company,Long>{
         Company company = findOrThrow(idCompany);
         Driver driver = driverRepository.findById(idDriver).orElseThrow();
 
+
+        driver.removeCompany(company);
         company.removeDriver(driver);
-        driver.removeWork(company);
 
         driverRepository.save(driver);
         repository.save(company);
