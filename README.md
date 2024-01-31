@@ -1,4 +1,4 @@
-K serveru náleží klient, který se nachází zde: https://gitlab.fit.cvut.cz/rocnamic/bi-tjv-rocnamic-semestral-client
+K serveru náleží klient, který se nachází zde: [https://gitlab.fit.cvut.cz/rocnamic/bi-tjv-rocnamic-semestral-client](https://github.com/RocnakMichal/bi-tjv-rocnamic-semestral-client)
 Dokumentaci lze najít zde: http://localhost:7080/swagger-ui/index.html
 Po spuštění serveru i klienta pokračujte na: http://localhost:8080/
 
